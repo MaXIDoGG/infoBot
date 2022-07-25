@@ -1,0 +1,22 @@
+{
+  "name": "infobot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "MaXIDoGG",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.0.3",
+    "dotenv": "^16.0.1",
+    "node-telegram-bot-api": "^0.58.0",
+    "nodemon": "^2.0.19",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.3",
+    "wokcommands": "^1.5.3"
+  }
+}
