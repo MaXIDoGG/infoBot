@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { Client, GatewayIntentBits, InteractionType} = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
@@ -5,9 +6,10 @@ const { Routes } = require('discord-api-types/v9');
 const TelegramApi = require('node-telegram-bot-api')
 const sequelize = require('./db')
 const UserModel = require('./models')
-const { token, clientId } = require('./config.json');
 
-const tgToken = '5298213348:AAG4aS9wyqRekKgdz6t5lIRSwO9VnD2PyRY'
+const tgToken = process.env.tgToken
+const dsToken = process.env.dsToken
+const clientId = process.clientId
 
 const bot = new TelegramApi(tgToken, {polling: true})
 
@@ -16,7 +18,8 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 
 const commands = [
     new SlashCommandBuilder().setName('countusers').setDescription('Number of users in voice channels'),
-    new SlashCommandBuilder().setName('addtelegram').setDescription('Add telegram bot')
+    new SlashCommandBuilder().setName('addtelegram').setDescription('Add telegram bot'),
+    new SlashCommandBuilder().setName('idinahui').setDescription('Go nahui to random user from voice channel')
 ].map(command => command.toJSON());
 
 client.on('ready', () => {
@@ -49,6 +52,21 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply(text);
 	} else if (commandName == 'addtelegram') {
         await interaction.reply(interaction.guild.id);
+	} else if (commandName == 'idinahui') {
+        let members = []
+        interaction.guild.channels.cache.forEach(channel => {
+            if (channel.type == 2 && channel.members.size != 0) {
+                channel.members.forEach(member => {
+                    members.push(member.displayName)
+                })
+            } else return;
+        })
+        if (members[0] == undefined) {
+            await interaction.reply(`${interaction.member.displayName}, пошел нахуй!`)
+        } else {
+            await interaction.reply(`${members[Math.floor(Math.random()*members.length)]}, пошёл нахуй!`)
+        }
+        
     }
 });
 
@@ -72,7 +90,7 @@ function checkVoiceChannels(guild) {
     return text
 }
 
-client.login(token);
+client.login(dsToken);
 
 
 ////////////////
