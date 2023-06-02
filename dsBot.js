@@ -12,7 +12,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 const commands = [
     new SlashCommandBuilder().setName('countusers').setDescription('Number of users in voice channels'),
     new SlashCommandBuilder().setName('addtelegram').setDescription('Add telegram bot'),
-    new SlashCommandBuilder().setName('idinahui').setDescription('Go nahui to random user from voice channel')
+    new SlashCommandBuilder().setName('cool').setDescription('Picks a random person to be cool all day')
 ].map(command => command.toJSON());
 
 client.on('ready', () => {
@@ -45,7 +45,7 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply(text);
 	} else if (commandName == 'addtelegram') {
         await interaction.reply(interaction.guild.id);
-	} else if (commandName == 'idinahui') {
+	} else if (commandName == 'cool') {
         let members = []
         interaction.guild.channels.cache.forEach(channel => {
             if (channel.type == 2 && channel.members.size != 0) {
@@ -55,9 +55,9 @@ client.on('interactionCreate', async interaction => {
             } else return;
         })
         if (members[0] == undefined) {
-            await interaction.reply(`${interaction.member.displayName}, пошел нахуй!`)
+            await interaction.reply(`${interaction.member.displayName}, You are cool!`)
         } else {
-            await interaction.reply(`${members[Math.floor(Math.random()*members.length)]}, пошёл нахуй!`)
+            await interaction.reply(`${members[Math.floor(Math.random()*members.length)]}, You are cool!`)
         }
         
     }
